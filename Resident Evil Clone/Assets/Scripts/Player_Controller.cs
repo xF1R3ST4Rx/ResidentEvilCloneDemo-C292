@@ -11,6 +11,7 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] float mouseSensity = 60f;
     [SerializeField] float verticalLookLimit;
     [SerializeField] Transform FpsCamera;
+    [SerializeField] private Transform firePoint;
 
     private bool isGrounded = true;
     private float xRotation;
@@ -27,6 +28,14 @@ public class Player_Controller : MonoBehaviour
     {
         Move();
         LookAround();
+        if(Input.GetButtonDown("Jump") && isGrounded)
+        {
+            Jump();
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            Shoot();
+        }
     }
     private void LookAround()
     {
@@ -65,6 +74,25 @@ public class Player_Controller : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
+        }
+    }
+    private void OnCollisionExit(Collision collision)
+    {
+        if(collision.gameObject.tag == "Ground")
+        {
+            isGrounded = false;
+        }
+    }
+    private void Shoot()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, 100))
+        {
+            Debug.DrawRay(firePoint.position, firePoint.forward * hit.distance, Color.red, 2f);
+            if (hit.transform.CompareTag("Zombie"))
+            {
+                hit.transform.GetComponent<Zombie>().TakeDamage(1);
+            }
         }
     }
 }
