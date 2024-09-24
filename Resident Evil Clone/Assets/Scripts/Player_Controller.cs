@@ -34,7 +34,7 @@ public class Player_Controller : MonoBehaviour
         }
         if (Input.GetMouseButtonDown(0))
         {
-            Shoot();
+            //Shoot();
         }
     }
     private void LookAround()
@@ -83,16 +83,16 @@ public class Player_Controller : MonoBehaviour
             isGrounded = false;
         }
     }
-    private void Shoot()
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, 100))
-        {
-            Debug.DrawRay(firePoint.position, firePoint.forward * hit.distance, Color.red, 2f);
-            if (hit.transform.CompareTag("Zombie"))
-            {
-                hit.transform.GetComponent<Zombie>().TakeDamage(1);
-            }
-        }
-    }
+    //private void Shoot()
+    //{
+    //   RaycastHit hit;
+    //   if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, 100))
+    //    {
+    //       Debug.DrawRay(firePoint.position, firePoint.forward * hit.distance, Color.red, 2f);
+    //        if (hit.transform.CompareTag("Zombie"))
+    //        {
+    //          hit.transform.GetComponent<Zombie>().TakeDamage(1);
+    //}
+    //    }
+    //}
 }
