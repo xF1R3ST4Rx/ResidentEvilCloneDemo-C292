@@ -16,7 +16,8 @@ public class Player_Controller : MonoBehaviour
     private bool isGrounded = true;
     private float xRotation;
     private Rigidbody rb;
-
+    private magazine currentMag;
+    public magazine CurrentMag { get => currentMag; set => currentMag = value; }
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -32,9 +33,19 @@ public class Player_Controller : MonoBehaviour
         {
             Jump();
         }
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            //Shoot();
+            float distance = 100f;
+            Debug.DrawRay(FpsCamera.position, FpsCamera.forward * distance, Color.red, 2f);
+            if (Physics.Raycast(FpsCamera.position, FpsCamera.forward, out RaycastHit hit, distance))
+            {
+                if (hit.transform.TryGetComponent(out magazine mag))
+                {
+                    Debug.Log("Magazine");
+                    mag.OnPickup(this);
+                    Debug.Log(currentMag);
+                }
+            }
         }
     }
     private void LookAround()
