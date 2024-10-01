@@ -6,8 +6,7 @@ public class Pistol : Weapon
 {
     private void Start()
     {
-        ammoCapacity = 10;
-        currentAmmo = ammoCapacity;
+        canFire = true;
     }
     // Update is called once per frame
     protected override void Update()
@@ -16,22 +15,20 @@ public class Pistol : Weapon
     }
     protected override void Fire()
     {
-        if (currentAmmo > 0)
+        if (currentMag == null)
         {
-            Debug.Log("Pistol Fired");
-            currentAmmo--;
+            Debug.Log("No mag");
+            return;
+        }
 
+        RaycastHit hit;
+        Debug.DrawRay(firePoint.position, firePoint.forward * 100, Color.red, 2f);
+        if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, 100))
+        {
+
+            if (hit.transform.CompareTag("Zombie"))
             {
-                RaycastHit hit;
-                Debug.DrawRay(firePoint.position, firePoint.forward * 100, Color.red, 2f);
-                if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, 100))
-                {
-                    
-                    if (hit.transform.CompareTag("Zombie"))
-                    {
-                        hit.transform.GetComponent<Zombie>().TakeDamage(1);
-                    }
-                }
+                hit.transform.GetComponent<Zombie>().TakeDamage(1);
             }
         }
         else
@@ -39,6 +36,7 @@ public class Pistol : Weapon
             Debug.Log("Out of Ammo");
         }
     }
+
     protected override void Reload()
     {
         StartCoroutine(ReloadCoroutine());
@@ -50,6 +48,6 @@ public class Pistol : Weapon
         yield return new WaitForSeconds(reloadtime);
         Debug.Log("Reload");
         canFire = true;
-        currentAmmo = ammoCapacity;
+        currentMag.Reload();
     }
 }

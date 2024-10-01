@@ -6,12 +6,14 @@ using UI = UnityEngine.UIElements;
 
 public class Player_Controller : MonoBehaviour
 {
+    [SerializeField] Transform dropPoint;
     [SerializeField] float moveSpeed = 5f;
     [SerializeField] float jumpForce = 5f;
     [SerializeField] float mouseSensity = 60f;
     [SerializeField] float verticalLookLimit;
     [SerializeField] Transform FpsCamera;
     [SerializeField] private Transform firePoint;
+    [SerializeField] Weapon weapon; 
 
     private bool isGrounded = true;
     private float xRotation;
@@ -44,8 +46,13 @@ public class Player_Controller : MonoBehaviour
                     Debug.Log("Magazine");
                     mag.OnPickup(this);
                     Debug.Log(currentMag);
+                    weapon.CurrentMag = currentMag;
                 }
             }
+        }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            currentMag.OnDrop(dropPoint);
         }
     }
     private void LookAround()

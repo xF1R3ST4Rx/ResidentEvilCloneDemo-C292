@@ -10,5 +10,5 @@ public interface Ipickupable
     string magType { set; get; }
     void OnPickup(Player_Controller player);
 
-    void OnDrop();
+    void OnDrop(Transform position);
 }
